@@ -1,0 +1,15 @@
+{
+  "domain": "homewake",
+  "name": "HomeWake",
+  "codeowners": ["@isi07"],
+  "config_flow": true,
+  "dependencies": ["frontend", "http"],
+  "documentation": "https://github.com/isi07/ha-homewake",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/isi07/ha-homewake/issues",
+  "loggers": ["holidays"],
+  "requirements": ["holidays>=0.108"],
+  "single_config_entry": true,
+  "version": "0.2.0"
+}

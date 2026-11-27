@@ -1,0 +1,41 @@
+# Offizielle Prüfwerkzeuge:
+# - hassfest: Home Assistants eigener Validator (Manifest, Übersetzungen, Config Flow …)
+# - HACS: prüft, ob das Repo später über HACS installierbar wäre
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 4 * * 1" # montags, fängt neue Regeln in HA/HACS ab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hassfest:
+    name: hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    name: HACS
+    # Die HACS-Prüfung funktioniert nur bei öffentlichen Repos. Solange das Repo privat ist,
+    # wird der Job übersprungen und läuft automatisch, sobald es öffentlich wird (E84).
+    # Nach dem Öffentlich-Schalten: am Repo Beschreibung und Themen (topics) setzen,
+    # z. B. home-assistant, hacs, homeassistant-integration; dann "topics" unten streichen.
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hacs/action@main
+        with:
+          category: integration
+          # brands: das Logo liegt in custom_components/homewake/brand/; diese Prüfung
+          #   sucht es im Repo home-assistant/brands
+          # topics: Themen werden erst nach dem Öffentlich-Schalten gesetzt (siehe oben)
+          ignore: brands topics
+          comment: false

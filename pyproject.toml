@@ -1,0 +1,100 @@
+# Entwicklungs-Konfiguration für HomeWake.
+# Die Integration selbst wird nicht als Python-Paket gebaut; diese Datei legt nur
+# fest, welche Werkzeuge wir zum Entwickeln brauchen und wie sie eingestellt sind.
+
+[project]
+name = "ha-homewake"
+version = "0.2.0"
+license = "MIT"
+license-files = ["LICENSE"]
+description = "Wecker fürs Zuhause in Home Assistant"
+requires-python = ">=3.14.2"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    # Test-Paket von Home Assistant selbst (ab HA 2026.11); bringt die passende
+    # HA-Version mit. Ersetzt pytest-homeassistant-custom-component.
+    "pytest-homeassistant==2026.11.3",
+    "pytest-cov",
+    # Laufzeit-Abhängigkeit der Integration (manifest.json), gleiche Version wie HA workday
+    "holidays==0.108",
+    "ruff",
+    "mypy",
+    # Installiert Node.js in diese Umgebung (für die Dashboard-Karte, E67)
+    "nodeenv",
+]
+
+[tool.uv]
+package = false
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+# -p no:respx: HA leitet httpx auf httpx2 um, bevor respx geladen wird
+addopts = "-p no:respx -ra --strict-markers"
+pythonpath = ["."]
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+src = ["custom_components", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # Import-Sortierung
+    "UP",       # moderne Python-Syntax
+    "B",        # typische Fehlerquellen
+    "SIM",      # Vereinfachungen
+    "ASYNC",    # async-Fallstricke (blockierende Aufrufe)
+    "DTZ",      # Datum/Zeit ohne Zeitzone
+    "RUF",
+    "PL",       # pylint-Regeln
+    "D",        # Docstrings
+]
+ignore = [
+    "D202",     # Leerzeile nach Docstring erlauben
+    "D203",     # kollidiert mit D211
+    "D213",     # kollidiert mit D212
+    "PLR2004",  # magische Zahlen in Tests ok
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["custom_components"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D103", "PLR0913"]
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.14"
+strict = true
+warn_unreachable = true
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+# Das Test-Plugin liefert keine Typinformationen mit.
+module = ["pytest_homeassistant.*", "astral", "astral.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# mypy merkt sich den Zustand nach einem assert und hält den nächsten
+# Vergleich (nach einem await) fälschlich für unmöglich.
+module = ["tests.*"]
+disable_error_code = ["comparison-overlap"]
+
+# ---------------------------------------------------------------- coverage
+# Testabdeckung der Integration (Quality Scale Silber: über 95 %).
+# Gemessen in `scripts/dev.sh check` und in GitHub (CI).
+[tool.coverage.run]
+source = ["custom_components/homewake"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+skip_covered = true

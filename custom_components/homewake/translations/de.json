@@ -1,0 +1,924 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "HomeWake einrichten",
+        "description": "HomeWake berechnet Weckzeiten für Personen und Räume.",
+        "data": {
+          "land": "Land"
+        },
+        "data_description": {
+          "land": "Für die Feiertage (gelten für alle Personen und Räume)."
+        }
+      },
+      "reconfigure": {
+        "title": "Feiertage ändern",
+        "data": {
+          "land": "Land"
+        },
+        "data_description": {
+          "land": "Für die Feiertage (gelten für alle Personen und Räume)."
+        }
+      },
+      "region": {
+        "title": "Region",
+        "data": {
+          "bundesland": "Bundesland / Region"
+        },
+        "data_description": {
+          "bundesland": "Optional. Ohne Region gelten nur landesweite Feiertage."
+        }
+      },
+      "sonne": {
+        "title": "Sonnenstand",
+        "description": "Ab welchem Sonnenstand es morgens hell bzw. abends dunkel ist. Daran werden Tagesbeginn und Tagesende der Räume angepasst.",
+        "data": {
+          "sonne_morgen": "Morgens (Tagesbeginn)",
+          "grad_morgen": "Grad morgens",
+          "sonne_abend": "Abends (Tagesende)",
+          "grad_abend": "Grad abends"
+        },
+        "data_description": {
+          "grad_morgen": "Höhe der Sonnenmitte, negativ = unter dem Horizont.",
+          "grad_abend": "Höhe der Sonnenmitte, negativ = unter dem Horizont.",
+          "sonne_morgen": "Standard: bürgerliche Dämmerung (−6°). Gradzahlen sind die scheinbare Höhe der Sonnenmitte.",
+          "sonne_abend": "Standard: bürgerliche Dämmerung (−6°). Gradzahlen sind die scheinbare Höhe der Sonnenmitte."
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Bereits konfiguriert. Nur eine einzige Konfiguration möglich.",
+      "reconfigure_successful": "Gespeichert."
+    }
+  },
+  "config_subentries": {
+    "person": {
+      "entry_type": "Person",
+      "initiate_flow": {
+        "user": "Person hinzufügen",
+        "reconfigure": "Person ändern"
+      },
+      "step": {
+        "user": {
+          "title": "Person hinzufügen",
+          "data": {
+            "name": "Name",
+            "urlaubskalender": "Urlaubskalender",
+            "schulferien": "Schulferien"
+          },
+          "sections": {
+            "standard": {
+              "name": "Standard",
+              "description": "Gilt an allen Tagen ohne eigene Zeit sowie an Feiertagen, in den Ferien und im Urlaub.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "montag": {
+              "name": "Montag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "dienstag": {
+              "name": "Dienstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "mittwoch": {
+              "name": "Mittwoch",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "donnerstag": {
+              "name": "Donnerstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "freitag": {
+              "name": "Freitag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "samstag": {
+              "name": "Samstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "sonntag": {
+              "name": "Sonntag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            }
+          },
+          "data_description": {
+            "name": "Name der Person, wird als Gerätename verwendet.",
+            "urlaubskalender": "Optional. Ein Kalender in Home Assistant (z. B. ein lokaler Kalender). Jeder Tag, den ein Eintrag berührt, gilt ganztägig als Urlaub: Dann gilt die Standard-Zeile.",
+            "schulferien": "Die Ferien einer Schule gelten als freie Tage (Standard-Zeile)."
+          }
+        },
+        "reconfigure": {
+          "title": "Person ändern",
+          "data": {
+            "name": "Name",
+            "urlaubskalender": "Urlaubskalender",
+            "schulferien": "Schulferien"
+          },
+          "sections": {
+            "standard": {
+              "name": "Standard",
+              "description": "Gilt an allen Tagen ohne eigene Zeit sowie an Feiertagen, in den Ferien und im Urlaub.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "montag": {
+              "name": "Montag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "dienstag": {
+              "name": "Dienstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "mittwoch": {
+              "name": "Mittwoch",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "donnerstag": {
+              "name": "Donnerstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "freitag": {
+              "name": "Freitag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "samstag": {
+              "name": "Samstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "sonntag": {
+              "name": "Sonntag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            }
+          },
+          "data_description": {
+            "name": "Name der Person, wird als Gerätename verwendet.",
+            "urlaubskalender": "Optional. Ein Kalender in Home Assistant (z. B. ein lokaler Kalender). Jeder Tag, den ein Eintrag berührt, gilt ganztägig als Urlaub: Dann gilt die Standard-Zeile.",
+            "schulferien": "Die Ferien einer Schule gelten als freie Tage (Standard-Zeile)."
+          }
+        },
+        "bundesland": {
+          "title": "Schule wählen: Bundesland",
+          "data": {
+            "bundesland": "Bundesland",
+            "ohne_schule": "Ohne (neue) Schule speichern"
+          },
+          "data_description": {
+            "ohne_schule": "Ohne Haken absenden, um es erneut zu versuchen."
+          }
+        },
+        "kreis": {
+          "title": "Schule wählen: Landkreis",
+          "data": {
+            "kreis": "Landkreis oder kreisfreie Stadt",
+            "ohne_schule": "Ohne (neue) Schule speichern"
+          },
+          "data_description": {
+            "ohne_schule": "Ohne Haken absenden, um es erneut zu versuchen."
+          }
+        },
+        "ort": {
+          "title": "Schule wählen: Ort",
+          "data": {
+            "ort": "Ort",
+            "ohne_schule": "Ohne (neue) Schule speichern"
+          },
+          "data_description": {
+            "ohne_schule": "Ohne Haken absenden, um es erneut zu versuchen."
+          }
+        },
+        "schule": {
+          "title": "Schule wählen",
+          "data": {
+            "schule": "Schule",
+            "ohne_schule": "Ohne (neue) Schule speichern"
+          },
+          "data_description": {
+            "ohne_schule": "Ohne Haken absenden, um es erneut zu versuchen."
+          }
+        },
+        "anbieter": {
+          "title": "Schule wählen: Anbieter",
+          "data": {
+            "anbieter": "Anbieter"
+          },
+          "data_description": {
+            "anbieter": "Woher die Schulferien kommen. Weitere Anbieter können später dazukommen."
+          }
+        }
+      },
+      "error": {
+        "standard_pflicht": "Standard braucht Tagesbeginn und Tagesende.",
+        "beide_oder_keiner": "Bitte beide Zeiten eintragen oder beide leer lassen.",
+        "ende_vor_beginn": "Das Tagesende muss nach dem Tagesbeginn liegen.",
+        "name_vergeben": "Es gibt schon eine Person mit diesem Namen.",
+        "keine_verbindung": "{anbieter} ist nicht erreichbar. Bitte erneut versuchen oder ohne (neue) Schule speichern.",
+        "leer": "Hier gibt es nichts zur Auswahl. Bitte ohne (neue) Schule speichern und später einen anderen Ort wählen."
+      },
+      "abort": {
+        "reconfigure_successful": "Gespeichert."
+      }
+    },
+    "raum": {
+      "entry_type": "Raum",
+      "initiate_flow": {
+        "user": "Raum hinzufügen",
+        "reconfigure": "Raum ändern"
+      },
+      "step": {
+        "user": {
+          "title": "Raum hinzufügen",
+          "data": {
+            "bereich": "Bereich",
+            "name": "Name"
+          },
+          "data_description": {
+            "bereich": "Optional: ein HA-Bereich. Name, Lichter und Lautsprecher werden daraus vorgeschlagen.",
+            "name": "Leer lassen, um den Namen des Bereichs zu übernehmen."
+          }
+        },
+        "einstellungen": {
+          "title": "Einstellungen für {name}",
+          "data": {
+            "zuordenbar": "Personen zuordenbar",
+            "klemm_beginn": "Klemm-Fenster Tagesbeginn",
+            "klemm_ende": "Klemm-Fenster Tagesende",
+            "lichter": "Lichter",
+            "helligkeit": "Licht-Helligkeit",
+            "elevation": "Licht nur bis Sonnenstand",
+            "lautsprecher": "Lautsprecher",
+            "lautstaerke": "Lautstärke",
+            "dauer": "Licht/Radio-Dauer"
+          },
+          "data_description": {
+            "zuordenbar": "Erscheint in der Raum-Auswahl der Personen. Aus: Raum läuft nur über seinen Standardplan.",
+            "klemm_beginn": "Wie lange nach der Weckzeit der Tagesbeginn höchstens an die Dämmerung angepasst wird (0 = nie).",
+            "klemm_ende": "Wie lange vor dem Tagesende es höchstens an die Dämmerung angepasst wird (0 = nie).",
+            "lichter": "Werden beim Wecken eingeschaltet.",
+            "helligkeit": "Helligkeit beim Wecken.",
+            "elevation": "Licht nur einschalten, solange die Sonne unter diesem Stand ist.",
+            "lautsprecher": "Spielt beim Wecken das Radio.",
+            "lautstaerke": "Lautstärke beim Wecken.",
+            "dauer": "Nach dieser Zeit schalten Licht und Radio wieder aus."
+          },
+          "sections": {
+            "standard": {
+              "name": "Standardplan: Standard",
+              "description": "Gilt an allen Tagen ohne eigene Zeit sowie an Feiertagen.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "montag": {
+              "name": "Montag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "dienstag": {
+              "name": "Dienstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "mittwoch": {
+              "name": "Mittwoch",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "donnerstag": {
+              "name": "Donnerstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "freitag": {
+              "name": "Freitag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "samstag": {
+              "name": "Samstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "sonntag": {
+              "name": "Sonntag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            }
+          }
+        },
+        "reconfigure": {
+          "title": "Raum ändern",
+          "data": {
+            "bereich": "Bereich",
+            "name": "Name",
+            "zuordenbar": "Personen zuordenbar",
+            "klemm_beginn": "Klemm-Fenster Tagesbeginn",
+            "klemm_ende": "Klemm-Fenster Tagesende",
+            "lichter": "Lichter",
+            "helligkeit": "Licht-Helligkeit",
+            "elevation": "Licht nur bis Sonnenstand",
+            "lautsprecher": "Lautsprecher",
+            "lautstaerke": "Lautstärke",
+            "dauer": "Licht/Radio-Dauer"
+          },
+          "data_description": {
+            "bereich": "Optional: ein HA-Bereich. Name, Lichter und Lautsprecher werden daraus vorgeschlagen.",
+            "name": "Leer lassen, um den Namen des Bereichs zu übernehmen.",
+            "zuordenbar": "Erscheint in der Raum-Auswahl der Personen. Aus: Raum läuft nur über seinen Standardplan.",
+            "klemm_beginn": "Wie lange nach der Weckzeit der Tagesbeginn höchstens an die Dämmerung angepasst wird (0 = nie).",
+            "klemm_ende": "Wie lange vor dem Tagesende es höchstens an die Dämmerung angepasst wird (0 = nie).",
+            "lichter": "Werden beim Wecken eingeschaltet.",
+            "helligkeit": "Helligkeit beim Wecken.",
+            "elevation": "Licht nur einschalten, solange die Sonne unter diesem Stand ist.",
+            "lautsprecher": "Spielt beim Wecken das Radio.",
+            "lautstaerke": "Lautstärke beim Wecken.",
+            "dauer": "Nach dieser Zeit schalten Licht und Radio wieder aus."
+          },
+          "sections": {
+            "standard": {
+              "name": "Standardplan: Standard",
+              "description": "Gilt an allen Tagen ohne eigene Zeit sowie an Feiertagen.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "montag": {
+              "name": "Montag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "dienstag": {
+              "name": "Dienstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "mittwoch": {
+              "name": "Mittwoch",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "donnerstag": {
+              "name": "Donnerstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "freitag": {
+              "name": "Freitag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "samstag": {
+              "name": "Samstag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            },
+            "sonntag": {
+              "name": "Sonntag",
+              "description": "Optional. Beide Zeiten oder keine; leer = Standard.",
+              "data": {
+                "beginn": "Tagesbeginn",
+                "ende": "Tagesende"
+              },
+              "data_description": {
+                "beginn": "Wann der Tag beginnt (Weckzeit).",
+                "ende": "Wann der Tag endet."
+              }
+            }
+          }
+        }
+      },
+      "error": {
+        "name_oder_bereich": "Bitte einen Bereich wählen oder einen Namen eingeben.",
+        "bereich_vergeben": "Dieser Bereich ist schon ein HomeWake-Raum.",
+        "name_vergeben": "Es gibt schon einen Raum mit diesem Namen.",
+        "standard_pflicht": "Standard braucht Tagesbeginn und Tagesende.",
+        "beide_oder_keiner": "Bitte beide Zeiten eintragen oder beide leer lassen.",
+        "ende_vor_beginn": "Das Tagesende muss nach dem Tagesbeginn liegen."
+      },
+      "abort": {
+        "reconfigure_successful": "Gespeichert."
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "naechster_wecker": {
+        "name": "Nächster Wecker"
+      },
+      "naechstes_tagesende": {
+        "name": "Nächstes Tagesende"
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "ausnahme": "Ausnahme",
+          "urlaub": "Urlaub",
+          "schulferien": "Schulferien",
+          "feiertag": "Feiertag",
+          "wochenende": "Wochenende",
+          "werktag": "Werktag",
+          "inaktiv": "Inaktiv"
+        },
+        "state_attributes": {
+          "grund": {
+            "name": "Grund",
+            "state": {
+              "montag": "Montag",
+              "dienstag": "Dienstag",
+              "mittwoch": "Mittwoch",
+              "donnerstag": "Donnerstag",
+              "freitag": "Freitag",
+              "samstag": "Samstag",
+              "sonntag": "Sonntag",
+              "kein_raum": "Kein Raum"
+            }
+          },
+          "licht": {
+            "name": "Licht"
+          },
+          "radio": {
+            "name": "Radio"
+          },
+          "kandidat": {
+            "name": "Kandidat",
+            "state": {
+              "heute": "Heute",
+              "morgen": "Morgen"
+            }
+          },
+          "tagesbeginn_heute": {
+            "name": "Tagesbeginn heute"
+          },
+          "tagesende_heute": {
+            "name": "Tagesende heute"
+          },
+          "tagesbeginn_morgen": {
+            "name": "Tagesbeginn morgen"
+          },
+          "tagesende_morgen": {
+            "name": "Tagesende morgen"
+          },
+          "status_heute": {
+            "name": "Status heute",
+            "state": {
+              "ausnahme": "Ausnahme",
+              "urlaub": "Urlaub",
+              "schulferien": "Schulferien",
+              "feiertag": "Feiertag",
+              "wochenende": "Wochenende",
+              "werktag": "Werktag",
+              "inaktiv": "Inaktiv"
+            }
+          },
+          "grund_heute": {
+            "name": "Grund heute",
+            "state": {
+              "montag": "Montag",
+              "dienstag": "Dienstag",
+              "mittwoch": "Mittwoch",
+              "donnerstag": "Donnerstag",
+              "freitag": "Freitag",
+              "samstag": "Samstag",
+              "sonntag": "Sonntag",
+              "kein_raum": "Kein Raum"
+            }
+          },
+          "status_morgen": {
+            "name": "Status morgen",
+            "state": {
+              "ausnahme": "Ausnahme",
+              "urlaub": "Urlaub",
+              "schulferien": "Schulferien",
+              "feiertag": "Feiertag",
+              "wochenende": "Wochenende",
+              "werktag": "Werktag",
+              "inaktiv": "Inaktiv"
+            }
+          },
+          "grund_morgen": {
+            "name": "Grund morgen",
+            "state": {
+              "montag": "Montag",
+              "dienstag": "Dienstag",
+              "mittwoch": "Mittwoch",
+              "donnerstag": "Donnerstag",
+              "freitag": "Freitag",
+              "samstag": "Samstag",
+              "sonntag": "Sonntag",
+              "kein_raum": "Kein Raum"
+            }
+          }
+        }
+      },
+      "weckzeit": {
+        "name": "Weckzeit",
+        "state_attributes": {
+          "personen": {
+            "name": "Personen"
+          },
+          "weckende": {
+            "name": "Weckende Personen"
+          },
+          "licht": {
+            "name": "Licht"
+          },
+          "radio": {
+            "name": "Radio"
+          },
+          "favorit": {
+            "name": "Favorit"
+          },
+          "quelle": {
+            "name": "Quelle",
+            "state": {
+              "personen": "Personen",
+              "standardplan": "Standardplan"
+            }
+          }
+        }
+      },
+      "tagesbeginn": {
+        "name": "Tagesbeginn"
+      },
+      "tagesende": {
+        "name": "Tagesende"
+      },
+      "weckzeit_morgen": {
+        "name": "Weckzeit morgen"
+      },
+      "tagesbeginn_morgen": {
+        "name": "Tagesbeginn morgen"
+      },
+      "tagesende_morgen": {
+        "name": "Tagesende morgen"
+      }
+    },
+    "binary_sensor": {
+      "wach": {
+        "name": "Wach",
+        "state_attributes": {
+          "wecken_bis": {
+            "name": "Wecken bis"
+          }
+        }
+      },
+      "tag": {
+        "name": "Tag"
+      }
+    },
+    "button": {
+      "wecken_beenden": {
+        "name": "Wecken beenden"
+      }
+    },
+    "select": {
+      "raum": {
+        "name": "Raum",
+        "state": {
+          "kein_raum": "Kein Raum"
+        },
+        "state_attributes": {
+          "raum_id": {
+            "name": "Raum-ID"
+          }
+        }
+      },
+      "favorit": {
+        "name": "Radio-Favorit",
+        "state": {
+          "kein_favorit": "Kein Favorit"
+        }
+      },
+      "standard_favorit": {
+        "name": "Standard-Favorit",
+        "state": {
+          "kein_favorit": "Kein Favorit"
+        }
+      }
+    },
+    "switch": {
+      "ausnahme": {
+        "name": "Ausnahme"
+      },
+      "licht_zeitplan": {
+        "name": "Zeitplan-Licht"
+      },
+      "radio_zeitplan": {
+        "name": "Zeitplan-Radio"
+      },
+      "licht_standard": {
+        "name": "Standard-Licht"
+      },
+      "radio_standard": {
+        "name": "Standard-Radio"
+      },
+      "licht_ausnahme": {
+        "name": "Ausnahme-Licht"
+      },
+      "radio_ausnahme": {
+        "name": "Ausnahme-Radio"
+      }
+    },
+    "time": {
+      "ausnahme_zeit": {
+        "name": "Ausnahme-Weckzeit"
+      }
+    }
+  },
+  "exceptions": {
+    "ausnahme_inaktiv": {
+      "message": "Die Person ist keinem Raum zugeordnet; eine Ausnahme ist nicht möglich."
+    },
+    "ausnahme_nach_tagesende": {
+      "message": "Die Ausnahme-Weckzeit liegt nicht vor dem Tagesende und würde nicht wecken."
+    }
+  },
+  "issues": {
+    "urlaubskalender_nicht_verfuegbar": {
+      "title": "Urlaubskalender von {person} nicht verfügbar",
+      "description": "HomeWake kann den Urlaubskalender {kalender} von {person} seit über 30 Minuten nicht lesen. HomeWake weckt weiter und nutzt die zuletzt gelesenen Urlaubstage (höchstens heute und morgen). Bitte den Kalender prüfen oder unter HomeWake → {person} → Ändern einen anderen wählen. Der Hinweis verschwindet von selbst, sobald der Kalender wieder lesbar ist."
+    },
+    "feiertage_nicht_verfuegbar": {
+      "title": "Feiertage nicht verfügbar",
+      "description": "Für Land {land} / Region {region} kennt HomeWake keine Feiertage. HomeWake weckt weiter, aber ohne Feiertage. Bitte unter HomeWake → Ändern ein anderes Land bzw. eine andere Region wählen."
+    },
+    "schulferien_veraltet": {
+      "title": "Schulferien-Daten von {schule} veraltet",
+      "description": "HomeWake kann die Schulferien von {schule} seit einiger Zeit nicht von {anbieter} abrufen. HomeWake weckt weiter und nutzt die zuletzt geladenen Ferien (ohne Daten: keine Schulferien). Der Hinweis verschwindet von selbst nach dem nächsten erfolgreichen Abruf."
+    },
+    "raum_verloren": {
+      "title": "{person} hat keinen Raum mehr",
+      "description": "Der Raum von {person} wurde gelöscht oder ist nicht mehr für Personen zuordenbar. {person} ist jetzt inaktiv (kein Raum): Kein Raum weckt {person}, eine aktive Ausnahme wurde gegebenenfalls gelöscht. Bitte in der Raum-Auswahl von {person} einen Raum wählen oder dort bewusst „kein Raum“ wählen. Danach verschwindet der Hinweis von selbst."
+    },
+    "zeitplan_ungueltig_person": {
+      "title": "Zeitplan von {name} ungültig",
+      "description": "Der gespeicherte Zeitplan von {name} ist nicht lesbar (beschädigte Daten). Bis er repariert ist, rechnet HomeWake {name} nicht: Die Entities von {name} sind nicht verfügbar, der Raum von {name} weckt nach den übrigen Personen bzw. seinem Standardplan. Bitte unter HomeWake → {name} → Ändern den Zeitplan neu speichern. Der Hinweis verschwindet von selbst, sobald der Zeitplan gültig ist."
+    },
+    "zeitplan_ungueltig_raum": {
+      "title": "Standardplan von {name} ungültig",
+      "description": "Der gespeicherte Standardplan des Raums {name} ist nicht lesbar (beschädigte Daten). Bis er repariert ist, rechnet HomeWake {name} nicht: Die Entities sind nicht verfügbar, der Raum weckt nicht. Personen in {name} behalten ihren Raum. Bitte unter HomeWake → {name} → Ändern den Standardplan neu speichern. Der Hinweis verschwindet von selbst, sobald der Plan gültig ist."
+    },
+    "geraet_fehlt": {
+      "title": "Geräte von {raum} nicht gefunden",
+      "description": "Der Raum {raum} nutzt Geräte, die Home Assistant nicht kennt (gelöscht, umbenannt oder deaktiviert): {geraete}. HomeWake kann sie zur Weckzeit nicht schalten. Bitte die Geräte in Home Assistant wieder einrichten oder unter HomeWake → {raum} → Neu konfigurieren andere Lichter bzw. einen anderen Lautsprecher wählen. Der Hinweis verschwindet von selbst, sobald alle Geräte des Raums gefunden werden."
+    },
+    "favorit_fehlt_person": {
+      "title": "Radio-Favorit von {person} nicht gefunden",
+      "description": "Der Radio-Favorit {favorit} von {person} steht nicht mehr in der Favoritenliste des Lautsprechers in {raum}. Beim Wecken spielt HomeWake stattdessen den Standard-Favoriten des Raums oder, falls auch der fehlt, den ersten Favoriten der Liste. Bitte in der Auswahl „Radio-Favorit“ von {person} einen anderen Favoriten wählen. Der Hinweis verschwindet von selbst, sobald der Favorit wieder in der Liste steht oder ein anderer gewählt ist."
+    },
+    "favorit_fehlt_raum": {
+      "title": "Standard-Favorit von {raum} nicht gefunden",
+      "description": "Der Standard-Favorit {favorit} des Raums {raum} steht nicht mehr in der Favoritenliste seines Lautsprechers. Beim Wecken spielt HomeWake stattdessen den ersten Favoriten der Liste, sofern die Person keinen gültigen Favoriten hat. Bitte für {raum} einen anderen Standard-Favoriten wählen. Der Hinweis verschwindet von selbst, sobald der Favorit wieder in der Liste steht oder ein anderer gewählt ist."
+    },
+    "lautsprecher_ohne_liste": {
+      "title": "Lautsprecher von {raum} ohne Favoritenliste",
+      "description": "Der Lautsprecher {lautsprecher} im Raum {raum} hat beim letzten Wecken keine Favoritenliste (source_list) gemeldet. HomeWake konnte daher kein Radio spielen und hat bis zum Ende der Versuche vergeblich gewartet. Bitte in Home Assistant prüfen, ob der Lautsprecher Quellen bzw. Favoriten anbietet (bei Sonos: Favoriten in der Sonos-App), oder unter HomeWake → {raum} → Neu konfigurieren einen anderen Lautsprecher wählen. Der Hinweis verschwindet von selbst, sobald der Lautsprecher eine Favoritenliste meldet."
+    }
+  },
+  "selector": {
+    "sonnenstand": {
+      "options": {
+        "astronomisch": "Astronomische Dämmerung (−18°)",
+        "nautisch": "Nautische Dämmerung (−12°)",
+        "buergerlich": "Bürgerliche Dämmerung (−6°)",
+        "blaue_stunde": "Ende blaue Stunde / Beginn goldene Stunde (−4°)",
+        "sonnenaufgang": "Sonnenaufgang/-untergang (oberer Rand am Horizont)",
+        "horizont": "Horizont (0°)",
+        "goldene_stunde": "Ende goldene Stunde (+6°)",
+        "frei": "Gradzahl frei wählen"
+      }
+    },
+    "schulferien": {
+      "options": {
+        "keine": "Keine Schule",
+        "waehlen": "Schule wählen (Anbieter und Schule folgen nach „OK“ in den nächsten Schritten)",
+        "behalten": "Bisherige Schule behalten ({anbieter}): {schule}"
+      }
+    }
+  }
+}

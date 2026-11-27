@@ -1,0 +1,73 @@
+# Prüft bei jedem Push und Pull Request: Stil (ruff), Typen (mypy) und Tests (pytest),
+# dazu die Dashboard-Karte (Biome, tsc, Vitest, gebaute Datei aktuell; E73).
+# Dieselben Prüfungen wie lokal mit `scripts/dev.ps1 check`.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint, Typen, Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: uv installieren
+        uses: astral-sh/setup-uv@v10.4.0 # hat keinen Kurz-Tag "v10", darum volle Version
+        with:
+          enable-cache: true
+
+      - name: Abhängigkeiten installieren (exakt nach uv.lock)
+        run: uv sync --locked
+
+      - name: ruff check
+        run: uv run --no-sync ruff check --output-format=github .
+
+      - name: ruff format
+        run: uv run --no-sync ruff format --check .
+
+      - name: mypy
+        run: uv run --no-sync mypy custom_components tests
+
+      - name: pytest
+        run: uv run --no-sync pytest --cov --cov-report=term
+
+  karte:
+    name: Dashboard-Karte
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Node.js installieren (Version aus frontend/.node-version)
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: frontend/.node-version
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Pakete installieren (exakt nach package-lock.json)
+        run: npm ci
+
+      - name: Biome, tsc, Vitest
+        run: npm run check
+
+      - name: Gebaute Karte passt zum Quellcode
+        run: |
+          npm run build
+          git diff --exit-code -- ../custom_components/homewake/frontend/

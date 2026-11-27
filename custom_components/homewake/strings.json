@@ -1,0 +1,924 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up HomeWake",
+        "description": "HomeWake calculates wake-up times for people and rooms.",
+        "data": {
+          "land": "Country"
+        },
+        "data_description": {
+          "land": "For public holidays (apply to all persons and rooms)."
+        }
+      },
+      "reconfigure": {
+        "title": "Change public holidays",
+        "data": {
+          "land": "Country"
+        },
+        "data_description": {
+          "land": "For public holidays (apply to all persons and rooms)."
+        }
+      },
+      "region": {
+        "title": "Region",
+        "data": {
+          "bundesland": "State / region"
+        },
+        "data_description": {
+          "bundesland": "Optional. Without a region only nationwide holidays apply."
+        }
+      },
+      "sonne": {
+        "title": "Sun elevation",
+        "description": "At which sun elevation it is light in the morning and dark in the evening. Start and end of day of the rooms follow it.",
+        "data": {
+          "sonne_morgen": "Morning (start of day)",
+          "grad_morgen": "Degrees in the morning",
+          "sonne_abend": "Evening (end of day)",
+          "grad_abend": "Degrees in the evening"
+        },
+        "data_description": {
+          "grad_morgen": "Height of the sun's center, negative = below the horizon.",
+          "grad_abend": "Height of the sun's center, negative = below the horizon.",
+          "sonne_morgen": "Default: civil twilight (−6°). Degrees are the apparent height of the sun's center.",
+          "sonne_abend": "Default: civil twilight (−6°). Degrees are the apparent height of the sun's center."
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]",
+      "reconfigure_successful": "[%key:common::config_flow::abort::reconfigure_successful%]"
+    }
+  },
+  "config_subentries": {
+    "person": {
+      "entry_type": "Person",
+      "initiate_flow": {
+        "user": "Add person",
+        "reconfigure": "Change person"
+      },
+      "step": {
+        "user": {
+          "title": "Add person",
+          "data": {
+            "name": "Name",
+            "urlaubskalender": "Vacation calendar",
+            "schulferien": "School holidays"
+          },
+          "sections": {
+            "standard": {
+              "name": "Default",
+              "description": "Applies on all days without their own time and on holidays, school holidays and vacation.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "montag": {
+              "name": "Monday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "dienstag": {
+              "name": "Tuesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "mittwoch": {
+              "name": "Wednesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "donnerstag": {
+              "name": "Thursday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "freitag": {
+              "name": "Friday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "samstag": {
+              "name": "Saturday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "sonntag": {
+              "name": "Sunday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            }
+          },
+          "data_description": {
+            "name": "Name of the person, used as device name.",
+            "urlaubskalender": "Optional. A calendar in Home Assistant (e.g. a local calendar). Every day touched by an entry counts as vacation for the whole day: the default times apply.",
+            "schulferien": "Holidays of a school count as days off (default schedule)."
+          }
+        },
+        "reconfigure": {
+          "title": "Change person",
+          "data": {
+            "name": "Name",
+            "urlaubskalender": "Vacation calendar",
+            "schulferien": "School holidays"
+          },
+          "sections": {
+            "standard": {
+              "name": "Default",
+              "description": "Applies on all days without their own time and on holidays, school holidays and vacation.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "montag": {
+              "name": "Monday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "dienstag": {
+              "name": "Tuesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "mittwoch": {
+              "name": "Wednesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "donnerstag": {
+              "name": "Thursday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "freitag": {
+              "name": "Friday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "samstag": {
+              "name": "Saturday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "sonntag": {
+              "name": "Sunday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            }
+          },
+          "data_description": {
+            "name": "Name of the person, used as device name.",
+            "urlaubskalender": "Optional. A calendar in Home Assistant (e.g. a local calendar). Every day touched by an entry counts as vacation for the whole day: the default times apply.",
+            "schulferien": "Holidays of a school count as days off (default schedule)."
+          }
+        },
+        "bundesland": {
+          "title": "Choose school: federal state",
+          "data": {
+            "bundesland": "Federal state",
+            "ohne_schule": "Save without (new) school"
+          },
+          "data_description": {
+            "ohne_schule": "Submit unticked to try again."
+          }
+        },
+        "kreis": {
+          "title": "Choose school: district",
+          "data": {
+            "kreis": "District or independent city",
+            "ohne_schule": "Save without (new) school"
+          },
+          "data_description": {
+            "ohne_schule": "Submit unticked to try again."
+          }
+        },
+        "ort": {
+          "title": "Choose school: town",
+          "data": {
+            "ort": "Town",
+            "ohne_schule": "Save without (new) school"
+          },
+          "data_description": {
+            "ohne_schule": "Submit unticked to try again."
+          }
+        },
+        "schule": {
+          "title": "Choose school",
+          "data": {
+            "schule": "School",
+            "ohne_schule": "Save without (new) school"
+          },
+          "data_description": {
+            "ohne_schule": "Submit unticked to try again."
+          }
+        },
+        "anbieter": {
+          "title": "Choose school: provider",
+          "data": {
+            "anbieter": "Provider"
+          },
+          "data_description": {
+            "anbieter": "Where the school holidays come from. More providers may follow."
+          }
+        }
+      },
+      "error": {
+        "standard_pflicht": "Default needs start and end of day.",
+        "beide_oder_keiner": "Enter both times or leave both empty.",
+        "ende_vor_beginn": "End of day must be after start of day.",
+        "name_vergeben": "A person with this name already exists.",
+        "keine_verbindung": "{anbieter} cannot be reached. Try again or save without (new) school.",
+        "leer": "Nothing to choose here. Save without (new) school and choose another town later."
+      },
+      "abort": {
+        "reconfigure_successful": "[%key:common::config_flow::abort::reconfigure_successful%]"
+      }
+    },
+    "raum": {
+      "entry_type": "Room",
+      "initiate_flow": {
+        "user": "Add room",
+        "reconfigure": "Change room"
+      },
+      "step": {
+        "user": {
+          "title": "Add room",
+          "data": {
+            "bereich": "Area",
+            "name": "Name"
+          },
+          "data_description": {
+            "bereich": "Optional: a Home Assistant area. Name, lights and speaker are suggested from it.",
+            "name": "Leave empty to use the area name."
+          }
+        },
+        "einstellungen": {
+          "title": "Settings for {name}",
+          "data": {
+            "zuordenbar": "Persons can be assigned",
+            "klemm_beginn": "Clamp window start of day",
+            "klemm_ende": "Clamp window end of day",
+            "lichter": "Lights",
+            "helligkeit": "Light brightness",
+            "elevation": "Light only below sun elevation",
+            "lautsprecher": "Speaker",
+            "lautstaerke": "Volume",
+            "dauer": "Light/radio duration"
+          },
+          "data_description": {
+            "zuordenbar": "Shown in the persons' room selection. Off: the room only follows its default plan.",
+            "klemm_beginn": "How long after the wake-up time the start of day may follow dawn (0 = never).",
+            "klemm_ende": "How long before the end of day it may follow dusk (0 = never).",
+            "lichter": "Turned on when waking up.",
+            "helligkeit": "Brightness when waking up.",
+            "elevation": "Only turn on the light while the sun is below this elevation.",
+            "lautsprecher": "Plays the radio when waking up.",
+            "lautstaerke": "Volume when waking up.",
+            "dauer": "Light and radio turn off again after this time."
+          },
+          "sections": {
+            "standard": {
+              "name": "Default plan: default",
+              "description": "Applies on all days without their own time and on public holidays.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "montag": {
+              "name": "Monday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "dienstag": {
+              "name": "Tuesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "mittwoch": {
+              "name": "Wednesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "donnerstag": {
+              "name": "Thursday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "freitag": {
+              "name": "Friday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "samstag": {
+              "name": "Saturday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "sonntag": {
+              "name": "Sunday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            }
+          }
+        },
+        "reconfigure": {
+          "title": "Change room",
+          "data": {
+            "bereich": "Area",
+            "name": "Name",
+            "zuordenbar": "Persons can be assigned",
+            "klemm_beginn": "Clamp window start of day",
+            "klemm_ende": "Clamp window end of day",
+            "lichter": "Lights",
+            "helligkeit": "Light brightness",
+            "elevation": "Light only below sun elevation",
+            "lautsprecher": "Speaker",
+            "lautstaerke": "Volume",
+            "dauer": "Light/radio duration"
+          },
+          "data_description": {
+            "bereich": "Optional: a Home Assistant area. Name, lights and speaker are suggested from it.",
+            "name": "Leave empty to use the area name.",
+            "zuordenbar": "Shown in the persons' room selection. Off: the room only follows its default plan.",
+            "klemm_beginn": "How long after the wake-up time the start of day may follow dawn (0 = never).",
+            "klemm_ende": "How long before the end of day it may follow dusk (0 = never).",
+            "lichter": "Turned on when waking up.",
+            "helligkeit": "Brightness when waking up.",
+            "elevation": "Only turn on the light while the sun is below this elevation.",
+            "lautsprecher": "Plays the radio when waking up.",
+            "lautstaerke": "Volume when waking up.",
+            "dauer": "Light and radio turn off again after this time."
+          },
+          "sections": {
+            "standard": {
+              "name": "Default plan: default",
+              "description": "Applies on all days without their own time and on public holidays.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "montag": {
+              "name": "Monday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "dienstag": {
+              "name": "Tuesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "mittwoch": {
+              "name": "Wednesday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "donnerstag": {
+              "name": "Thursday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "freitag": {
+              "name": "Friday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "samstag": {
+              "name": "Saturday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            },
+            "sonntag": {
+              "name": "Sunday",
+              "description": "Optional. Both times or none; empty = default.",
+              "data": {
+                "beginn": "Start of day",
+                "ende": "End of day"
+              },
+              "data_description": {
+                "beginn": "When the day starts (wake-up time).",
+                "ende": "When the day ends."
+              }
+            }
+          }
+        }
+      },
+      "error": {
+        "name_oder_bereich": "Select an area or enter a name.",
+        "bereich_vergeben": "This area is already a HomeWake room.",
+        "name_vergeben": "A room with this name already exists.",
+        "standard_pflicht": "Default needs start and end of day.",
+        "beide_oder_keiner": "Enter both times or leave both empty.",
+        "ende_vor_beginn": "End of day must be after start of day."
+      },
+      "abort": {
+        "reconfigure_successful": "[%key:common::config_flow::abort::reconfigure_successful%]"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "naechster_wecker": {
+        "name": "Next wake-up"
+      },
+      "naechstes_tagesende": {
+        "name": "Next end of day"
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "ausnahme": "Exception",
+          "urlaub": "Vacation",
+          "schulferien": "School holidays",
+          "feiertag": "Public holiday",
+          "wochenende": "Weekend",
+          "werktag": "Workday",
+          "inaktiv": "Inactive"
+        },
+        "state_attributes": {
+          "grund": {
+            "name": "Reason",
+            "state": {
+              "montag": "Monday",
+              "dienstag": "Tuesday",
+              "mittwoch": "Wednesday",
+              "donnerstag": "Thursday",
+              "freitag": "Friday",
+              "samstag": "Saturday",
+              "sonntag": "Sunday",
+              "kein_raum": "No room"
+            }
+          },
+          "licht": {
+            "name": "Light"
+          },
+          "radio": {
+            "name": "Radio"
+          },
+          "kandidat": {
+            "name": "Candidate",
+            "state": {
+              "heute": "Today",
+              "morgen": "Tomorrow"
+            }
+          },
+          "tagesbeginn_heute": {
+            "name": "Start of day today"
+          },
+          "tagesende_heute": {
+            "name": "End of day today"
+          },
+          "tagesbeginn_morgen": {
+            "name": "Start of day tomorrow"
+          },
+          "tagesende_morgen": {
+            "name": "End of day tomorrow"
+          },
+          "status_heute": {
+            "name": "Status today",
+            "state": {
+              "ausnahme": "Exception",
+              "urlaub": "Vacation",
+              "schulferien": "School holidays",
+              "feiertag": "Public holiday",
+              "wochenende": "Weekend",
+              "werktag": "Workday",
+              "inaktiv": "Inactive"
+            }
+          },
+          "grund_heute": {
+            "name": "Reason today",
+            "state": {
+              "montag": "Monday",
+              "dienstag": "Tuesday",
+              "mittwoch": "Wednesday",
+              "donnerstag": "Thursday",
+              "freitag": "Friday",
+              "samstag": "Saturday",
+              "sonntag": "Sunday",
+              "kein_raum": "No room"
+            }
+          },
+          "status_morgen": {
+            "name": "Status tomorrow",
+            "state": {
+              "ausnahme": "Exception",
+              "urlaub": "Vacation",
+              "schulferien": "School holidays",
+              "feiertag": "Public holiday",
+              "wochenende": "Weekend",
+              "werktag": "Workday",
+              "inaktiv": "Inactive"
+            }
+          },
+          "grund_morgen": {
+            "name": "Reason tomorrow",
+            "state": {
+              "montag": "Monday",
+              "dienstag": "Tuesday",
+              "mittwoch": "Wednesday",
+              "donnerstag": "Thursday",
+              "freitag": "Friday",
+              "samstag": "Saturday",
+              "sonntag": "Sunday",
+              "kein_raum": "No room"
+            }
+          }
+        }
+      },
+      "weckzeit": {
+        "name": "Wake-up time",
+        "state_attributes": {
+          "personen": {
+            "name": "Persons"
+          },
+          "weckende": {
+            "name": "Waking persons"
+          },
+          "licht": {
+            "name": "Light"
+          },
+          "radio": {
+            "name": "Radio"
+          },
+          "favorit": {
+            "name": "Favorite"
+          },
+          "quelle": {
+            "name": "Source",
+            "state": {
+              "personen": "Persons",
+              "standardplan": "Default plan"
+            }
+          }
+        }
+      },
+      "tagesbeginn": {
+        "name": "Start of day"
+      },
+      "tagesende": {
+        "name": "End of day"
+      },
+      "weckzeit_morgen": {
+        "name": "Wake-up time tomorrow"
+      },
+      "tagesbeginn_morgen": {
+        "name": "Start of day tomorrow"
+      },
+      "tagesende_morgen": {
+        "name": "End of day tomorrow"
+      }
+    },
+    "binary_sensor": {
+      "wach": {
+        "name": "Awake",
+        "state_attributes": {
+          "wecken_bis": {
+            "name": "Wake-up until"
+          }
+        }
+      },
+      "tag": {
+        "name": "Daytime"
+      }
+    },
+    "button": {
+      "wecken_beenden": {
+        "name": "End wake-up"
+      }
+    },
+    "select": {
+      "raum": {
+        "name": "Room",
+        "state": {
+          "kein_raum": "No room"
+        },
+        "state_attributes": {
+          "raum_id": {
+            "name": "Room ID"
+          }
+        }
+      },
+      "favorit": {
+        "name": "Radio favorite",
+        "state": {
+          "kein_favorit": "No favorite"
+        }
+      },
+      "standard_favorit": {
+        "name": "Default favorite",
+        "state": {
+          "kein_favorit": "No favorite"
+        }
+      }
+    },
+    "switch": {
+      "ausnahme": {
+        "name": "Exception"
+      },
+      "licht_zeitplan": {
+        "name": "Schedule light"
+      },
+      "radio_zeitplan": {
+        "name": "Schedule radio"
+      },
+      "licht_standard": {
+        "name": "Default light"
+      },
+      "radio_standard": {
+        "name": "Default radio"
+      },
+      "licht_ausnahme": {
+        "name": "Exception light"
+      },
+      "radio_ausnahme": {
+        "name": "Exception radio"
+      }
+    },
+    "time": {
+      "ausnahme_zeit": {
+        "name": "Exception wake-up time"
+      }
+    }
+  },
+  "exceptions": {
+    "ausnahme_inaktiv": {
+      "message": "The person is not assigned to a room; an exception is not possible."
+    },
+    "ausnahme_nach_tagesende": {
+      "message": "The exception wake-up time is not before the end of day and would not wake."
+    }
+  },
+  "issues": {
+    "urlaubskalender_nicht_verfuegbar": {
+      "title": "Vacation calendar of {person} not available",
+      "description": "HomeWake cannot read the vacation calendar {kalender} of {person} for more than 30 minutes. HomeWake keeps waking and uses the vacation days it read last (today and tomorrow at most). Please check the calendar or choose another one under HomeWake → {person} → Reconfigure. This notice disappears by itself as soon as the calendar can be read again."
+    },
+    "feiertage_nicht_verfuegbar": {
+      "title": "Public holidays not available",
+      "description": "HomeWake knows no public holidays for country {land} / region {region}. HomeWake keeps waking, but without public holidays. Please choose another country or region under HomeWake → Reconfigure."
+    },
+    "schulferien_veraltet": {
+      "title": "School holiday data for {schule} is outdated",
+      "description": "HomeWake has not been able to fetch the school holidays of {schule} from {anbieter} for a while. HomeWake keeps waking and uses the holidays loaded last (without any data: no school holidays). The notice disappears by itself after the next successful download."
+    },
+    "raum_verloren": {
+      "title": "{person} no longer has a room",
+      "description": "The room of {person} was deleted or can no longer be assigned to persons. {person} is now inactive (no room): no room wakes {person}, and an active exception, if any, was deleted. Please choose a room in the room selection of {person}, or choose “no room” there on purpose. This notice then disappears by itself."
+    },
+    "zeitplan_ungueltig_person": {
+      "title": "Schedule of {name} is invalid",
+      "description": "The saved schedule of {name} cannot be read (damaged data). Until it is fixed, HomeWake does not calculate {name}: the entities of {name} are unavailable, and the room of {name} wakes according to the other persons or its default plan. Please open HomeWake → {name} → Reconfigure and save the schedule again. This notice disappears by itself as soon as the schedule is valid."
+    },
+    "zeitplan_ungueltig_raum": {
+      "title": "Default plan of {name} is invalid",
+      "description": "The saved default plan of the room {name} cannot be read (damaged data). Until it is fixed, HomeWake does not calculate {name}: its entities are unavailable and the room does not wake. Persons assigned to {name} keep their room. Please open HomeWake → {name} → Reconfigure and save the default plan again. This notice disappears by itself as soon as the plan is valid."
+    },
+    "geraet_fehlt": {
+      "title": "Devices of {raum} not found",
+      "description": "The room {raum} uses devices that Home Assistant does not know (deleted, renamed or disabled): {geraete}. HomeWake cannot switch them at wake-up time. Please add them again in Home Assistant, or choose other lights or another speaker under HomeWake → {raum} → Reconfigure. This notice disappears by itself as soon as all devices of the room are found."
+    },
+    "favorit_fehlt_person": {
+      "title": "Radio favorite of {person} not found",
+      "description": "The radio favorite {favorit} of {person} is no longer in the favorites list of the speaker in {raum}. At wake-up time HomeWake plays the default favorite of the room instead or, if that is missing too, the first favorite of the list. Please choose another favorite in the radio favorite selection of {person}. This notice disappears by itself as soon as the favorite is back in the list or another one is chosen."
+    },
+    "favorit_fehlt_raum": {
+      "title": "Default favorite of {raum} not found",
+      "description": "The default favorite {favorit} of the room {raum} is no longer in the favorites list of its speaker. At wake-up time HomeWake plays the first favorite of the list instead, unless the person has a valid favorite. Please choose another default favorite for {raum}. This notice disappears by itself as soon as the favorite is back in the list or another one is chosen."
+    },
+    "lautsprecher_ohne_liste": {
+      "title": "Speaker of {raum} has no favorites list",
+      "description": "The speaker {lautsprecher} in {raum} did not report a favorites list (source_list) during the last wake-up, so HomeWake could not play any radio and waited in vain until the end of its attempts. Check in Home Assistant whether the speaker offers sources or favorites (for Sonos: favorites in the Sonos app), or choose another speaker under HomeWake → {raum} → Reconfigure. This notice disappears by itself as soon as the speaker reports a favorites list."
+    }
+  },
+  "selector": {
+    "sonnenstand": {
+      "options": {
+        "astronomisch": "Astronomical twilight (−18°)",
+        "nautisch": "Nautical twilight (−12°)",
+        "buergerlich": "Civil twilight (−6°)",
+        "blaue_stunde": "End of blue hour / start of golden hour (−4°)",
+        "sonnenaufgang": "Sunrise/sunset (upper limb at horizon)",
+        "horizont": "Horizon (0°)",
+        "goldene_stunde": "End of golden hour (+6°)",
+        "frei": "Choose degrees freely"
+      }
+    },
+    "schulferien": {
+      "options": {
+        "keine": "No school",
+        "waehlen": "Choose a school (provider and school follow after “OK” in the next steps)",
+        "behalten": "Keep current school ({anbieter}): {schule}"
+      }
+    }
+  }
+}

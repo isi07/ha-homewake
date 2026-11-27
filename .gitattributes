@@ -1,0 +1,7 @@
+# Alle Textdateien mit Linux-Zeilenenden (LF) speichern,
+# damit Windows, WSL und GitHub dieselben Dateien sehen.
+* text=auto eol=lf
+
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary

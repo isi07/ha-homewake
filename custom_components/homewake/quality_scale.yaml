@@ -1,0 +1,96 @@
+# Stand der Integration Quality Scale (Ziel: Silber, langfristig Gold).
+# Siehe https://developers.home-assistant.io/docs/core/integration-quality-scale/
+rules:
+  # ---------------------------------------------------------------- Bronze
+  action-setup:
+    status: exempt
+    comment: HomeWake registriert (noch) keine eigenen Aktionen.
+  appropriate-polling:
+    status: done
+    comment: Kein Polling; genauer Timer auf die nächste Änderung plus Sicherheitslauf.
+  brands:
+    status: done
+    comment: Eigenes Icon unter brand/ (HA lädt es seit 2026.x aus Custom Integrations).
+  common-modules: done
+  config-flow: done
+  config-flow-test-coverage: done
+  dependency-transparency: done
+  docs-actions:
+    status: exempt
+    comment: Keine eigenen Aktionen.
+  docs-high-level-description: done
+  docs-installation-instructions: done
+  docs-removal-instructions:
+    status: done
+    comment: README „Entfernen“; die Speicherdatei wird mit dem Eintrag gelöscht.
+  entity-event-setup:
+    status: exempt
+    comment: Entities abonnieren keine Ereignisse; Aktualisierung über den Coordinator.
+  entity-unique-id: done
+  has-entity-name: done
+  runtime-data: done
+  test-before-configure:
+    status: exempt
+    comment: >-
+      Der Haupteintrag verbindet sich mit keinem Gerät oder Dienst. Die Schulwahl
+      im Personen-Dialog fragt mehr-schulferien.de ab und zeigt einen Fehler,
+      wenn die Seite nicht erreichbar ist (E40).
+  test-before-setup: done
+  unique-config-entry: done
+  # ---------------------------------------------------------------- Silber
+  action-exceptions:
+    status: exempt
+    comment: HomeWake registriert (noch) keine eigenen Aktionen.
+  config-entry-unloading: done
+  docs-configuration-parameters:
+    status: done
+    comment: README „Einrichten“ (Haus, Person, Raum).
+  docs-installation-parameters:
+    status: done
+    comment: README „Einrichten“, Abschnitt Haus.
+  entity-unavailable: done
+  integration-owner: done
+  log-when-unavailable: done
+  parallel-updates: done
+  reauthentication-flow:
+    status: exempt
+    comment: Keine Anmeldung bei einem Dienst.
+  test-coverage:
+    status: done
+    comment: pytest-cov in check und CI, Schwelle 95 % (pyproject.toml).
+  # ---------------------------------------------------------------- Gold (Stand Phase 8)
+  devices: done
+  diagnostics: done
+  discovery:
+    status: exempt
+    comment: Dienst ohne Gerät, es gibt nichts zu entdecken.
+  discovery-update-info:
+    status: exempt
+    comment: Keine Entdeckung.
+  docs-data-update: todo
+  docs-examples: todo
+  docs-known-limitations: todo
+  docs-supported-devices:
+    status: exempt
+    comment: Keine unterstützten Geräte, HomeWake ist ein Dienst.
+  docs-supported-functions: todo
+  docs-troubleshooting:
+    status: todo
+    comment: README nennt Reparaturen und Diagnose; Schritte zu typischen Fehlern fehlen.
+  docs-use-cases: todo
+  dynamic-devices:
+    status: done
+    comment: Personen und Räume als Untereinträge; neue werden ohne Neustart Geräte.
+  entity-category: todo
+  entity-device-class: done
+  entity-disabled-by-default: todo
+  entity-translations: done
+  exception-translations:
+    status: done
+    comment: Alle Meldungen an den Nutzer übersetzt; interne Fehler beim Kalenderlesen erreichen ihn nicht.
+  icon-translations: todo
+  reconfiguration-flow: done
+  repair-issues: done
+  stale-devices:
+    status: done
+    comment: Gelöschte Untereinträge entfernt HA samt Gerät; HomeWake räumt Speicher und Hinweise auf.

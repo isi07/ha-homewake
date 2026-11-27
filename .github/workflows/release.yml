@@ -1,0 +1,56 @@
+# Legt bei einem Versions-Tag (z. B. v0.2.0) einen GitHub-Release mit homewake.zip an.
+# - prüft, dass Tag, manifest.json und pyproject.toml dieselbe Version tragen
+# - homewake.zip enthält den Inhalt von custom_components/homewake (ohne Ordner darüber);
+#   HACS bzw. der Marketplace entpackt es nach config/custom_components/homewake (hacs.json)
+name: Release
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Release
+    # Releases gibt es nur im öffentlichen Repo (E93). Der gleiche Tag im
+    # Entwicklungs-Repo legt dort keinen zweiten Release an.
+    if: github.repository == 'isi07/ha-homewake'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # Release anlegen
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false # gh bekommt sein Token über GH_TOKEN
+
+      - name: Versionen prüfen
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          manifest="$(jq -r .version custom_components/homewake/manifest.json)"
+          pyproject="$(python3 -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
+          echo "Tag: $tag, manifest.json: $manifest, pyproject.toml: $pyproject"
+          if ! [[ "$tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME hat nicht die Form vX.Y.Z"; exit 1
+          fi
+          if [ "$tag" != "$manifest" ] || [ "$tag" != "$pyproject" ]; then
+            echo "::error::Versionen passen nicht zusammen (Tag $tag, manifest.json $manifest, pyproject.toml $pyproject)"
+            exit 1
+          fi
+
+      - name: ZIP bauen
+        run: |
+          cd custom_components/homewake
+          zip -r -X "$GITHUB_WORKSPACE/homewake.zip" . -x "*__pycache__*"
+          unzip -l "$GITHUB_WORKSPACE/homewake.zip"
+
+      - name: Release anlegen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME" homewake.zip
+          --verify-tag
+          --title "HomeWake $GITHUB_REF_NAME"
+          --generate-notes
